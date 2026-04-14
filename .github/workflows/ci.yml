@@ -1,5 +1,4 @@
 name: CI Pipeline
-
 on:
   push:
   pull_request:
@@ -57,3 +56,9 @@ jobs:
         run: |
           cd frontend
           npm run build
+      
+      # -------------------------
+      # 🐳 DOCKER BUILD
+      # -------------------------
+      - name: Build Docker services
+        run: docker-compose build

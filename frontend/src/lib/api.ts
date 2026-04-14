@@ -1,7 +1,8 @@
 // lib/api.ts
 // Typed API client for the SmartTax Assist backend
 
-const BASE = '/api'
+const BASE =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 export interface Expense {
   id: string
