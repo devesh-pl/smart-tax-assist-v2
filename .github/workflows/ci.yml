@@ -61,4 +61,4 @@ jobs:
       # 🐳 DOCKER BUILD
       # -------------------------
       - name: Build Docker services
-        run: docker-compose build
+        run: docker compose build
