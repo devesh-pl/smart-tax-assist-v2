@@ -26,8 +26,8 @@ ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 if ENVIRONMENT == "production":
     # Production: Only allow specific Vercel domain(s)
     ALLOWED_ORIGINS = [
-        "https://smart-tax-assist-v2.vercel.app",  # Main Vercel deployment
-        "https://*.vercel.app",                      # Allow preview deployments
+        "https://smart-tax-assist.vercel.app",    # Your actual Vercel URL
+        "https://smart-tax-assist-v2.vercel.app",  # If you deploy to this too
     ]
 else:
     # Development: Allow localhost
