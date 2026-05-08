@@ -71,6 +71,23 @@ app.include_router(categories.router, tags=["Categories"])
 app.include_router(export.router,     tags=["Export"])
 
 
+@app.get("/", tags=["Root"])
+def root():
+    """Root endpoint - confirms server is running."""
+    return {
+        "message": "SmartTax Assist Backend Server Running Successfully",
+        "service": "SmartTax Assist API",
+        "version": "1.0.0",
+        "status": "running",
+        "environment": ENVIRONMENT
+    }
+
+
 @app.get("/health", tags=["Health"])
 def health():
-    return {"status": "ok", "service": "SmartTax Assist API"}
+    """Health check endpoint."""
+    return {
+        "status": "ok",
+        "service": "SmartTax Assist API",
+        "environment": ENVIRONMENT
+    }
