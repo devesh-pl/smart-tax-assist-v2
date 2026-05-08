@@ -9,6 +9,8 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import Sidebar from '@/components/layout/Sidebar'
 
 function fmt(n: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n)
@@ -39,7 +41,7 @@ function StatCard({
   )
 }
 
-export default function Dashboard() {
+function DashboardContent() {
   const [summary, setSummary] = useState<Summary | null>(null)
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [loading, setLoading] = useState(true)
@@ -220,5 +222,18 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function Dashboard() {
+  return (
+    <ProtectedRoute>
+      <div className="flex h-screen overflow-hidden bg-surface text-slate-200">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          <DashboardContent />
+        </main>
+      </div>
+    </ProtectedRoute>
   )
 }

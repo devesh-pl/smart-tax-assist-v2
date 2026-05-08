@@ -7,16 +7,24 @@ services:
     container_name: smarttax-backend
     ports:
       - "8000:8000"
+    environment:
+      MONGODB_URL: ${MONGODB_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
     restart: always
+    env_file:
+      - .env.local
 
   frontend:
     build:
       context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     container_name: smarttax-frontend
     ports:
       - "3000:3000"
     depends_on:
       - backend
-    environment:
-      NEXT_PUBLIC_API_URL: http://backend:8000
     restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}

@@ -38,11 +38,48 @@ export interface ExpenseUpdate {
   bill_name?: string
 }
 
+// ── Utility: Get JWT Token ────────────────────────────────────────────────────
+function getToken(): string | null {
+  if (typeof window === 'undefined') return null
+  return localStorage.getItem('token')
+}
+
+// ── Utility: Fetch with Auth ─────────────────────────────────────────────────
+async function fetchWithAuth(
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> {
+  const token = getToken()
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string>),
+  }
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  })
+
+  // Handle 401 - redirect to login
+  if (response.status === 401) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    if (typeof window !== 'undefined') {
+      window.location.href = '/auth/login'
+    }
+  }
+
+  return response
+}
+
 // ── Bills ─────────────────────────────────────────────────────────────────────
 export async function uploadBill(file: File): Promise<UploadResult> {
   const form = new FormData()
   form.append('file', file)
-  const res = await fetch(`${BASE}/upload-bill`, { method: 'POST', body: form })
+  const res = await fetchWithAuth(`${BASE}/upload-bill`, { method: 'POST', body: form })
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: 'Upload failed' }))
     throw new Error(err.detail ?? 'Upload failed')
@@ -60,19 +97,19 @@ export async function getExpenses(filters?: {
   if (filters?.category)     params.set('category', filters.category)
   if (filters?.expense_type) params.set('expense_type', filters.expense_type)
   if (filters?.month)        params.set('month', filters.month)
-  const res = await fetch(`${BASE}/expenses?${params}`)
+  const res = await fetchWithAuth(`${BASE}/expenses?${params}`)
   if (!res.ok) throw new Error('Failed to fetch expenses')
   return res.json()
 }
 
 export async function getSummary(): Promise<Summary> {
-  const res = await fetch(`${BASE}/expenses/summary`)
+  const res = await fetchWithAuth(`${BASE}/expenses/summary`)
   if (!res.ok) throw new Error('Failed to fetch summary')
   return res.json()
 }
 
 export async function updateExpense(id: string, data: ExpenseUpdate): Promise<Expense> {
-  const res = await fetch(`${BASE}/expenses/${id}`, {
+  const res = await fetchWithAuth(`${BASE}/expenses/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -82,20 +119,20 @@ export async function updateExpense(id: string, data: ExpenseUpdate): Promise<Ex
 }
 
 export async function deleteExpense(id: string): Promise<void> {
-  const res = await fetch(`${BASE}/expenses/${id}`, { method: 'DELETE' })
+  const res = await fetchWithAuth(`${BASE}/expenses/${id}`, { method: 'DELETE' })
   if (!res.ok) throw new Error('Failed to delete expense')
 }
 
 // ── Categories ────────────────────────────────────────────────────────────────
 export async function getCategories(): Promise<string[]> {
-  const res = await fetch(`${BASE}/categories`)
+  const res = await fetchWithAuth(`${BASE}/categories`)
   if (!res.ok) throw new Error('Failed to fetch categories')
   const data = await res.json()
   return data.categories
 }
 
 export async function addCategory(name: string): Promise<string[]> {
-  const res = await fetch(`${BASE}/categories`, {
+  const res = await fetchWithAuth(`${BASE}/categories`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name }),
@@ -109,7 +146,7 @@ export async function addCategory(name: string): Promise<string[]> {
 }
 
 export async function renameCategory(oldName: string, newName: string): Promise<string[]> {
-  const res = await fetch(`${BASE}/categories/${encodeURIComponent(oldName)}`, {
+  const res = await fetchWithAuth(`${BASE}/categories/${encodeURIComponent(oldName)}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ new_name: newName }),
@@ -120,7 +157,7 @@ export async function renameCategory(oldName: string, newName: string): Promise<
 }
 
 export async function deleteCategory(name: string): Promise<string[]> {
-  const res = await fetch(`${BASE}/categories/${encodeURIComponent(name)}`, {
+  const res = await fetchWithAuth(`${BASE}/categories/${encodeURIComponent(name)}`, {
     method: 'DELETE',
   })
   if (!res.ok) throw new Error('Failed to delete category')
@@ -130,6 +167,11 @@ export async function deleteCategory(name: string): Promise<string[]> {
 
 // ── Export ────────────────────────────────────────────────────────────────────
 export function downloadExcel(): void {
+  const token = getToken()
+  const url = new URL(`${BASE}/export-excel`)
+  if (token) {
+    url.searchParams.set('token', token)
+  }
   // Open in same tab so browser triggers native download
-  window.location.href = `${BASE}/export-excel`
+  window.location.href = url.toString()
 }

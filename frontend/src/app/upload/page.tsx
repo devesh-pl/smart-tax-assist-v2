@@ -9,6 +9,9 @@ import {
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import Link from 'next/link'
+import Image from 'next/image';
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import Sidebar from '@/components/layout/Sidebar'
 
 type Status = 'idle' | 'dragging' | 'uploading' | 'success' | 'error'
 
@@ -16,7 +19,7 @@ function fmt(n: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n)
 }
 
-export default function UploadPage() {
+function UploadContent() {
   const [status, setStatus] = useState<Status>('idle')
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -113,9 +116,11 @@ export default function UploadPage() {
             {file ? (
               <div className="p-8 flex items-center gap-5">
                 {preview ? (
-                  <img
+                  <Image
                     src={preview}
                     alt="bill preview"
+                    width={96}
+                    height={96}
                     className="w-24 h-24 object-cover rounded-xl border border-surface-border"
                   />
                 ) : (
@@ -239,5 +244,18 @@ export default function UploadPage() {
         </div>
       ) : null}
     </div>
+  )
+}
+
+export default function UploadPage() {
+  return (
+    <ProtectedRoute>
+      <div className="flex h-screen overflow-hidden bg-surface text-slate-200">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          <UploadContent />
+        </main>
+      </div>
+    </ProtectedRoute>
   )
 }

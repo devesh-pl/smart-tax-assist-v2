@@ -1,0 +1,19 @@
+// vercel.json - Vercel deployment configuration
+// This file tells Vercel how to build and run the frontend
+
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "rootDirectory": "frontend",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "@next_public_api_url",
+    "NEXT_PUBLIC_ENVIRONMENT": "@next_public_environment"
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}

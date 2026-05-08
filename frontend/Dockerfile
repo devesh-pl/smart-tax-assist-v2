@@ -1,6 +1,8 @@
 # ---------- BUILD STAGE ----------
 FROM node:18 AS builder
 
+ARG NEXT_PUBLIC_API_URL=http://localhost:8000
+
 WORKDIR /app
 
 # Copy package files first (for caching)

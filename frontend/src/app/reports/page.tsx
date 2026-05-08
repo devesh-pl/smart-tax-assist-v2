@@ -8,12 +8,14 @@ import {
   TrendingUp, Briefcase, User, DollarSign, Receipt
 } from 'lucide-react'
 import { clsx } from 'clsx'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import Sidebar from '@/components/layout/Sidebar'
 
 function fmt(n: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n)
 }
 
-export default function ReportsPage() {
+function ReportsContent() {
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [summary, setSummary] = useState<Summary | null>(null)
   const [loading, setLoading] = useState(true)
@@ -179,5 +181,18 @@ export default function ReportsPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function ReportsPage() {
+  return (
+    <ProtectedRoute>
+      <div className="flex h-screen overflow-hidden bg-surface text-slate-200">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          <ReportsContent />
+        </main>
+      </div>
+    </ProtectedRoute>
   )
 }

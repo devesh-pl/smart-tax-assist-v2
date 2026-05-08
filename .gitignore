@@ -1,14 +1,97 @@
-# Python
-venv/
-__pycache__/
-*.pyc
-*.pyo
+# ═══════════════════════════════════════════════════════════════════════════════
+# Environment Variables - NEVER COMMIT THESE
+# ═══════════════════════════════════════════════════════════════════════════════
 .env
-
-# Node
-node_modules/
-.next/
 .env.local
+.env.*.local
+.env.production
+.env.production.local
 
-# OS
+# ═══════════════════════════════════════════════════════════════════════════════
+# Frontend (Next.js)
+# ═══════════════════════════════════════════════════════════════════════════════
+frontend/.next
+frontend/out
+frontend/node_modules
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnp
+frontend/.pnp.js
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Backend (Python/FastAPI)
+# ═══════════════════════════════════════════════════════════════════════════════
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+backend/*.so
+backend/.Python
+backend/build/
+backend/develop-eggs/
+backend/dist/
+backend/downloads/
+backend/eggs/
+backend/.eggs/
+backend/lib/
+backend/lib64/
+backend/parts/
+backend/sdist/
+backend/var/
+backend/wheels/
+backend/pip-wheel-metadata/
+backend/share/python-wheels/
+backend/*.egg-info/
+backend/.installed.cfg
+backend/*.egg
+backend/MANIFEST
+backend/.env
+backend/.env.local
+backend/.venv
+backend/venv/
+backend/ENV/
+backend/env/
+backend/bin/
+backend/Scripts/
+backend/.mypy_cache/
+backend/.dmypy.json
+backend/dmypy.json
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# IDE & Editor
+# ═══════════════════════════════════════════════════════════════════════════════
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# OS Specific
+# ═══════════════════════════════════════════════════════════════════════════════
+.DS_Store
+Thumbs.db
+*.log
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Docker
+# ═══════════════════════════════════════════════════════════════════════════════
+.dockerignore
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Sensitive Files
+# ═══════════════════════════════════════════════════════════════════════════════
+*.pem
+*.key
+*.crt
+secrets.json
+credentials.json

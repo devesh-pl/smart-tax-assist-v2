@@ -12,6 +12,8 @@ import {
   Loader2, AlertCircle, ChevronDown, Search
 } from 'lucide-react'
 import { clsx } from 'clsx'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import Sidebar from '@/components/layout/Sidebar'
 
 function fmt(n: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n)
@@ -181,7 +183,7 @@ function CategoryPanel({
 }
 
 // ── Main page ─────────────────────────────────────────────────────────────────
-export default function ExpensesPage() {
+function ExpensesContent() {
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
@@ -387,5 +389,18 @@ export default function ExpensesPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function ExpensesPage() {
+  return (
+    <ProtectedRoute>
+      <div className="flex h-screen overflow-hidden bg-surface text-slate-200">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          <ExpensesContent />
+        </main>
+      </div>
+    </ProtectedRoute>
   )
 }

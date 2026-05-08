@@ -66,13 +66,13 @@ def generate_excel(expenses: List[Expense]) -> bytes:
 
     for row_idx, exp in enumerate(expenses, start=2):
         row_data = [
-            exp.bill_name,
-            exp.vendor,
-            exp.category,
-            exp.expense_type,
-            exp.amount,
-            exp.gst,
-            exp.date or "",
+            exp["bill_name"],
+            exp["vendor"],
+            exp["category"],
+            exp["expense_type"],
+            exp["amount"],
+            exp["gst"],
+            exp.get("date") or "",
         ]
         fill = PatternFill("solid", fgColor=ALT_ROW_BG) if row_idx % 2 == 0 else None
 
@@ -85,8 +85,8 @@ def generate_excel(expenses: List[Expense]) -> bytes:
             if col_idx in (5, 6):          # currency columns
                 cell.number_format = '#,##0.00'
 
-        total_amount += exp.amount
-        total_gst    += exp.gst
+        total_amount += exp["amount"]
+        total_gst    += exp["gst"]
 
     # Totals row
     total_row = len(expenses) + 2
@@ -106,8 +106,8 @@ def generate_excel(expenses: List[Expense]) -> bytes:
     # ── Sheet 2 – Summary ─────────────────────────────────────────────────────
     ws2 = wb.create_sheet("Summary")
 
-    business = sum(e.amount for e in expenses if e.expense_type == "Business")
-    personal  = sum(e.amount for e in expenses if e.expense_type == "Personal")
+    business = sum(e["amount"] for e in expenses if e["expense_type"] == "Business")
+    personal  = sum(e["amount"] for e in expenses if e["expense_type"] == "Personal")
 
     summary_data = [
         ("Metric",              "Value"),

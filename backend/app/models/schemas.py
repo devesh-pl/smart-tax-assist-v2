@@ -52,3 +52,38 @@ class SummaryStats(BaseModel):
     business_expenses: float
     personal_expenses: float
     expense_count: int
+
+
+# ==================== Authentication Models ====================
+
+class SignupRequest(BaseModel):
+    """Request for user signup."""
+    email: str
+    password: str
+    full_name: str
+
+
+class LoginRequest(BaseModel):
+    """Request for user login."""
+    email: str
+    password: str
+
+
+class UserResponse(BaseModel):
+    """User information (excludes password)."""
+    id: str
+    email: str
+    full_name: str
+
+
+class TokenResponse(BaseModel):
+    """Response with JWT token."""
+    access_token: str
+    token_type: str
+    user: UserResponse
+
+
+class TokenPayload(BaseModel):
+    """Decoded JWT payload."""
+    user_id: str
+    exp: Optional[int] = None

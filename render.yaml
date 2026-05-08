@@ -1,0 +1,25 @@
+# render.yaml - Render deployment configuration
+# This file tells Render how to build and run the backend
+
+services:
+  - type: web
+    name: smarttax-backend
+    runtime: python
+    plan: free
+    region: oregon
+    
+    # Build configuration
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    
+    # Root directory (where the service code is)
+    rootDir: backend
+    
+    # Environment variables (set these in Render dashboard)
+    # MONGODB_URL: your-mongodb-atlas-url
+    # JWT_SECRET: your-jwt-secret
+    # ENVIRONMENT: production
+    
+    # Auto-deploy on GitHub push
+    repo: https://github.com/YOUR_USERNAME/smart-tax-assist-v2.git
+    branch: main

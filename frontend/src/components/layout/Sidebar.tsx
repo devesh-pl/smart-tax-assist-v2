@@ -2,18 +2,20 @@
 // components/layout/Sidebar.tsx
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   Upload,
   Receipt,
   FileSpreadsheet,
   Zap,
+  LogOut,
 } from 'lucide-react'
 import { clsx } from 'clsx'
+import { useAuth } from '@/hooks/useAuth'
 
 const NAV = [
-  { href: '/',           label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/expenses',   label: 'Dashboard', icon: LayoutDashboard },
   { href: '/upload',     label: 'Upload Bill', icon: Upload },
   { href: '/expenses',   label: 'Expenses',   icon: Receipt },
   { href: '/reports',    label: 'Reports',    icon: FileSpreadsheet },
@@ -21,6 +23,17 @@ const NAV = [
 
 export default function Sidebar() {
   const path = usePathname()
+  const router = useRouter()
+  const { user, isLoading, isAuthenticated, logout } = useAuth()
+
+  if (!isAuthenticated) {
+    return null
+  }
+
+  const handleLogout = () => {
+    logout()
+    router.push('/auth/login')
+  }
 
   return (
     <aside className="w-64 shrink-0 flex flex-col bg-surface-card border-r border-surface-border h-full">
@@ -59,10 +72,27 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="px-6 py-4 border-t border-surface-border">
+      {/* User Info & Logout */}
+      <div className="px-6 py-4 border-t border-surface-border space-y-4">
+        {user && (
+          <div className="text-sm">
+            <p className="text-slate-400 text-xs">Logged in as</p>
+            <p className="text-white font-medium truncate">{user.full_name}</p>
+            <p className="text-slate-500 text-xs truncate">{user.email}</p>
+          </div>
+        )}
+        
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all duration-150 text-sm font-medium"
+        >
+          <LogOut className="w-4 h-4" />
+          Logout
+        </button>
+
         <p className="text-xs text-slate-500">v1.0.0 · Bills never stored</p>
       </div>
     </aside>
   )
 }
+
