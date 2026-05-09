@@ -172,7 +172,7 @@ Expected response:
 Click "Environment Variables" and add:
 
 ```
-NEXT_PUBLIC_API_URL = https://smarttax-backend.onrender.com
+NEXT_PUBLIC_API_URL = https://smart-tax-assist.onrender.com
 NEXT_PUBLIC_ENVIRONMENT = production
 ```
 
@@ -221,7 +221,7 @@ ENVIRONMENT: production
 
 **Vercel (Frontend):**
 ```
-NEXT_PUBLIC_API_URL: https://smarttax-backend.onrender.com
+NEXT_PUBLIC_API_URL: https://smart-tax-assist.onrender.com
 NEXT_PUBLIC_ENVIRONMENT: production
 ```
 
@@ -350,7 +350,7 @@ git push
 
 **Solution:**
 1. Verify `NEXT_PUBLIC_API_URL` in Vercel environment variables
-2. Ensure backend is running: `curl https://smarttax-backend.onrender.com/health`
+2. Ensure backend is running: `curl https://smart-tax-assist.onrender.com/health`
 3. Check CORS in `backend/app/main.py`
 
 ### ❌ CORS Errors
@@ -438,5 +438,5 @@ db.expenses.createIndex({ user_id: 1 })
 
 Your SmartTax Assist application is now live:
 - 🌐 Frontend: `https://smart-tax-assist.vercel.app`
-- 🔌 Backend: `https://smarttax-backend.onrender.com`
+- 🔌 Backend: `https://smart-tax-assist.onrender.com`
 - 🗄️ Database: `MongoDB Atlas`

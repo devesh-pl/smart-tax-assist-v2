@@ -210,7 +210,7 @@ ENVIRONMENT = production
 
 ### Frontend (Vercel)
 ```
-NEXT_PUBLIC_API_URL = https://smarttax-backend.onrender.com
+NEXT_PUBLIC_API_URL = https://smart-tax-assist.onrender.com
 NEXT_PUBLIC_ENVIRONMENT = production
 ```
 
@@ -274,7 +274,7 @@ openssl rand -base64 32
 - [ ] Can see expenses
 
 ### Render Backend
-- [ ] Health check: `curl https://smarttax-backend.onrender.com/health`
+- [ ] Health check: `curl https://smart-tax-assist.onrender.com/health`
 - [ ] Returns: `{"status":"ok"}`
 - [ ] Monitor logs for errors
 

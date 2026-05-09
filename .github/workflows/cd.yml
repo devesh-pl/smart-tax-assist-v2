@@ -76,7 +76,7 @@ jobs:
       - name: Build frontend
         run: |
           cd frontend
-          NEXT_PUBLIC_API_URL=https://smarttax-backend.onrender.com npm run build
+          NEXT_PUBLIC_API_URL=https://smart-tax-assist.onrender.com npm run build
 
       # ── DOCKER BUILD ────────────────────────────────────────────────────
       - name: Build Docker services
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production-backend
-      url: https://smarttax-backend.onrender.com
+      url: https://smart-tax-assist.onrender.com
 
     steps:
       - name: Checkout code
@@ -111,7 +111,7 @@ jobs:
       - name: Health check - Backend
         run: |
           for i in {1..10}; do
-            if curl -f https://smarttax-backend.onrender.com/health; then
+            if curl -f https://smart-tax-assist.onrender.com/health; then
               echo "✅ Backend health check passed"
               exit 0
             fi
@@ -171,7 +171,7 @@ jobs:
           echo "Frontend: ${{ needs.deploy-frontend.result }}"
           echo ""
           echo "📋 Deployment Summary:"
-          echo "  Backend:  https://smarttax-backend.onrender.com"
+          echo "  Backend:  https://smart-tax-assist.onrender.com"
           echo "  Frontend: https://smart-tax-assist.vercel.app"
           echo ""
           echo "🔍 Check Render logs: https://dashboard.render.com"

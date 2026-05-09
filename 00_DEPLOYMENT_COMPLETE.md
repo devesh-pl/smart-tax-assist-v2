@@ -177,7 +177,7 @@ smart-tax-assist-v2/
    ├── Create service from GitHub
    ├── Set Root Directory: backend
    ├── Add Env Vars: MONGODB_URL, JWT_SECRET, ENVIRONMENT
-   └── Deploy! → https://smarttax-backend.onrender.com
+   └── Deploy! → https://smart-tax-assist.onrender.com
 
 4. VERCEL (Frontend)
    ├── Create project from GitHub
@@ -278,7 +278,7 @@ git push origin main
 - [ ] Build command: `npm run build`
 - [ ] Install command: `npm install`
 - [ ] Environment variables added:
-  - `NEXT_PUBLIC_API_URL=https://smarttax-backend.onrender.com` ✓
+  - `NEXT_PUBLIC_API_URL=https://smart-tax-assist.onrender.com` ✓
   - `NEXT_PUBLIC_ENVIRONMENT=production` ✓
 - [ ] Frontend deployed successfully
 - [ ] App loads without errors
@@ -300,7 +300,7 @@ git push origin main
 **Solution:** Update Vercel URL in backend CORS → Push to GitHub → Render redeploys
 
 ### ❌ "Cannot connect to API"
-**Solution:** Verify `NEXT_PUBLIC_API_URL` in Vercel env vars → Test `curl https://smarttax-backend.onrender.com/health`
+**Solution:** Verify `NEXT_PUBLIC_API_URL` in Vercel env vars → Test `curl https://smart-tax-assist.onrender.com/health`
 
 ### ❌ "MongoDB Connection Error"
 **Solution:** Check MONGODB_URL in Render → Add Render IP to MongoDB Atlas whitelist
@@ -458,7 +458,7 @@ Your SmartTax Assist application is now configured for secure deployment to:
 
 ```
 Frontend:  Vercel  → https://smart-tax-assist.vercel.app
-Backend:   Render  → https://smarttax-backend.onrender.com
+Backend:   Render  → https://smart-tax-assist.onrender.com
 Database:  MongoDB Atlas
 Version Control: GitHub (Private)
 ```

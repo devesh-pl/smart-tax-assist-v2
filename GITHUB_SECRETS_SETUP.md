@@ -137,7 +137,7 @@ VERCEL_PROJECT_ID         ●●●●●●●●●
 3. Verify services are live:
    ```bash
    # Backend
-   curl https://smarttax-backend.onrender.com/health
+   curl https://smart-tax-assist.onrender.com/health
    
    # Frontend
    curl https://smart-tax-assist-v2.vercel.app/

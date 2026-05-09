@@ -193,9 +193,7 @@ Now you can monitor your app with these endpoints:
 
 ```bash
 # Health status
-curl https://smarttax-backend.onrender.com/health
-
-# Application metrics
+   curl https://smart-tax-assist.onrender.com/health
 curl https://smarttax-backend.onrender.com/metrics
 
 # API documentation

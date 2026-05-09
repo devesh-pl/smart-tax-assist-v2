@@ -177,7 +177,7 @@ Once deployed, you can monitor your services:
 
 **Backend Health:**
 ```bash
-curl https://smarttax-backend.onrender.com/health
+curl https://smart-tax-assist.onrender.com/health
 ```
 
 Response:
@@ -191,7 +191,7 @@ Response:
 
 **Backend Metrics:**
 ```bash
-curl https://smarttax-backend.onrender.com/metrics
+curl https://smart-tax-assist.onrender.com/metrics
 ```
 
 Response:
@@ -214,7 +214,7 @@ Use [Uptime Robot](https://uptimerobot.com) to monitor your backend:
 1. Sign up (free tier: 50 monitors)
 2. Create new monitor:
    - Type: HTTP(s)
-   - URL: `https://smarttax-backend.onrender.com/health`
+   - URL: `https://smart-tax-assist.onrender.com/health`
    - Interval: 5 minutes
    - Get alerts via email if service goes down
 

@@ -158,7 +158,7 @@ Click "Environment" and add:
 
 - Click "Create Web Service"
 - Wait 2-5 minutes
-- You'll get URL: `https://smarttax-backend.onrender.com`
+- You'll get URL: `https://smart-tax-assist.onrender.com`
 
 ---
 
@@ -183,7 +183,7 @@ Click "Environment Variables" and add:
 
 | Key | Value | Notes |
 |-----|-------|-------|
-| `NEXT_PUBLIC_API_URL` | `https://smarttax-backend.onrender.com` | Your Render backend URL |
+| `NEXT_PUBLIC_API_URL` | `https://smart-tax-assist.onrender.com` | Your Render backend URL |
 | `NEXT_PUBLIC_ENVIRONMENT` | `production` | Must be `production` |
 
 #### Step 4: Deploy
@@ -336,7 +336,7 @@ ENVIRONMENT = production
 
 **Vercel Frontend:**
 ```
-NEXT_PUBLIC_API_URL = https://smarttax-backend.onrender.com
+NEXT_PUBLIC_API_URL = https://smart-tax-assist.onrender.com
 NEXT_PUBLIC_ENVIRONMENT = production
 ```
 
@@ -430,7 +430,7 @@ cp frontend/.env.local.example frontend/.env.local
 
 **Solution:**
 1. Verify Render URL is correct
-2. Test backend: `curl https://smarttax-backend.onrender.com/health`
+2. Test backend: `curl https://smart-tax-assist.onrender.com/health`
 3. Update Vercel environment variable
 4. Redeploy Vercel
 
