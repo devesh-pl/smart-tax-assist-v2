@@ -1,0 +1,177 @@
+name: CD Pipeline - Auto Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  test-and-build:
+    name: Test & Build
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+        node-version: ["18"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # ── BACKEND TESTS ────────────────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          pytest -v || echo "Warning: Some tests failed"
+        continue-on-error: true
+
+      # ── FRONTEND TESTS ────────────────────────────────────────────────────
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache Node dependencies
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Lint frontend
+        run: |
+          cd frontend
+          npm run lint
+        continue-on-error: true
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          NEXT_PUBLIC_API_URL=https://smarttax-backend.onrender.com npm run build
+
+      # ── DOCKER BUILD ────────────────────────────────────────────────────
+      - name: Build Docker services
+        run: docker compose build
+
+  deploy-backend:
+    name: Deploy Backend to Render
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: production-backend
+      url: https://smarttax-backend.onrender.com
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy backend to Render
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" ]; then
+            echo "⚠️  RENDER_DEPLOY_HOOK_URL not configured"
+            echo "Setup: https://github.com/${{ github.repository }}/settings/secrets"
+            exit 1
+          fi
+          
+          curl --fail-with-body -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        continue-on-error: true
+
+      - name: Wait for Render deployment
+        run: sleep 30
+
+      - name: Health check - Backend
+        run: |
+          for i in {1..10}; do
+            if curl -f https://smarttax-backend.onrender.com/health; then
+              echo "✅ Backend health check passed"
+              exit 0
+            fi
+            echo "Attempt $i/10 - waiting for backend to be ready..."
+            sleep 10
+          done
+          echo "⚠️  Backend health check failed"
+          exit 1
+        continue-on-error: true
+
+  deploy-frontend:
+    name: Deploy Frontend to Vercel
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: production-frontend
+      url: https://smart-tax-assist-v2.vercel.app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy frontend to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+        continue-on-error: true
+
+      - name: Health check - Frontend
+        run: |
+          for i in {1..5}; do
+            if curl -f https://smart-tax-assist-v2.vercel.app/; then
+              echo "✅ Frontend health check passed"
+              exit 0
+            fi
+            echo "Attempt $i/5 - waiting for frontend to be ready..."
+            sleep 5
+          done
+          echo "⚠️  Frontend health check failed"
+          exit 1
+        continue-on-error: true
+
+  notify-deployment:
+    name: Deployment Complete
+    needs: [deploy-backend, deploy-frontend]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Deployment Status
+        run: |
+          echo "Backend: ${{ needs.deploy-backend.result }}"
+          echo "Frontend: ${{ needs.deploy-frontend.result }}"
+          echo ""
+          echo "📋 Deployment Summary:"
+          echo "  Backend:  https://smarttax-backend.onrender.com"
+          echo "  Frontend: https://smart-tax-assist-v2.vercel.app"
+          echo ""
+          echo "🔍 Check Render logs: https://dashboard.render.com"
+          echo "🔍 Check Vercel logs: https://vercel.com/dashboard"

@@ -15,11 +15,27 @@ services:
     # Root directory (where the service code is)
     rootDirectory: backend
     
-    # Environment variables (set these in Render dashboard)
-    # MONGODB_URL: your-mongodb-atlas-url
-    # JWT_SECRET: your-jwt-secret
-    # ENVIRONMENT: production
+    # Health check configuration
+    # Render will periodically call this endpoint to ensure the service is healthy
+    healthCheckPath: /health
     
     # Auto-deploy on GitHub push
     repo: https://github.com/YOUR_USERNAME/smart-tax-assist-v2.git
     branch: main
+    
+    # ──────────────────────────────────────────────────────────────────────
+    # DEPLOYMENT HOOK FOR GITHUB ACTIONS CI/CD:
+    # ──────────────────────────────────────────────────────────────────────
+    # 1. Go to: https://dashboard.render.com
+    # 2. Navigate to your service (smarttax-backend)
+    # 3. Go to Settings > Deploy Hook
+    # 4. Copy the webhook URL
+    # 5. Add it to GitHub Secrets as: RENDER_DEPLOY_HOOK_URL
+    # 6. Now CD pipeline will auto-deploy on every main branch push
+    # ──────────────────────────────────────────────────────────────────────
+    
+    # Environment variables (set these in Render dashboard)
+    # MONGODB_URL: your-mongodb-atlas-url
+    # JWT_SECRET: your-jwt-secret
+    # ENVIRONMENT: production
+

@@ -2,6 +2,7 @@
 # SmartTax Assist – FastAPI application entry point
 
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,6 +10,24 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import bills, expenses, categories, export, auth
 from app.utils.db import init_db, close_db
 from app.services import auth_service
+
+# ── Metrics (simple in-memory tracking) ──────────────────────────────────────
+class Metrics:
+    def __init__(self):
+        self.start_time = datetime.utcnow()
+        self.total_requests = 0
+        self.errors = 0
+    
+    def increment_requests(self):
+        self.total_requests += 1
+    
+    def increment_errors(self):
+        self.errors += 1
+    
+    def get_uptime_seconds(self):
+        return (datetime.utcnow() - self.start_time).total_seconds()
+
+metrics = Metrics()
 
 # ── Load environment variables ────────────────────────────────────────────────
 load_dotenv()
@@ -45,6 +64,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Request Tracking Middleware ──────────────────────────────────────────────
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
+
+class MetricsMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        metrics.increment_requests()
+        try:
+            response = await call_next(request)
+            return response
+        except Exception as e:
+            metrics.increment_errors()
+            raise
+
+app.add_middleware(MetricsMiddleware)
 
 # ── Startup and Shutdown Events ──────────────────────────────────────────────
 @app.on_event("startup")
@@ -90,4 +125,18 @@ def health():
         "status": "ok",
         "service": "SmartTax Assist API",
         "environment": ENVIRONMENT
+    }
+
+
+@app.get("/metrics", tags=["Metrics"])
+def get_metrics():
+    """Application metrics endpoint."""
+    return {
+        "status": "ok",
+        "service": "SmartTax Assist API",
+        "environment": ENVIRONMENT,
+        "uptime_seconds": metrics.get_uptime_seconds(),
+        "total_requests": metrics.total_requests,
+        "error_count": metrics.errors,
+        "timestamp": datetime.utcnow().isoformat()
     }
