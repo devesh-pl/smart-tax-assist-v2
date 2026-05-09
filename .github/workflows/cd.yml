@@ -128,7 +128,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production-frontend
-      url: https://smart-tax-assist-v2.vercel.app
+      url: https://smart-tax-assist.vercel.app
+      
 
     steps:
       - name: Checkout code
@@ -146,7 +147,7 @@ jobs:
       - name: Health check - Frontend
         run: |
           for i in {1..5}; do
-            if curl -f https://smart-tax-assist-v2.vercel.app/; then
+            if curl -f https://smart-tax-assist.vercel.app/; then
               echo "✅ Frontend health check passed"
               exit 0
             fi
@@ -171,7 +172,7 @@ jobs:
           echo ""
           echo "📋 Deployment Summary:"
           echo "  Backend:  https://smarttax-backend.onrender.com"
-          echo "  Frontend: https://smart-tax-assist-v2.vercel.app"
+          echo "  Frontend: https://smart-tax-assist.vercel.app"
           echo ""
           echo "🔍 Check Render logs: https://dashboard.render.com"
           echo "🔍 Check Vercel logs: https://vercel.com/dashboard"

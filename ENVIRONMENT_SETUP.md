@@ -190,7 +190,7 @@ Click "Environment Variables" and add:
 
 - Click "Deploy"
 - Wait 3-10 minutes
-- You'll get URL: `https://smart-tax-assist-v2.vercel.app`
+- You'll get URL: `https://smart-tax-assist.vercel.app`
 
 ---
 

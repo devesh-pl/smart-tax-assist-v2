@@ -70,7 +70,7 @@ allow_origin_regex="http://.*:3000"
 **After (Dev + Production):**
 ```python
 if ENVIRONMENT == "production":
-    ALLOWED_ORIGINS = ["https://smart-tax-assist-v2.vercel.app"]
+    ALLOWED_ORIGINS = ["https://smart-tax-assist.vercel.app"]
 else:
     ALLOWED_ORIGINS = ["http://localhost:3000"]
 ```

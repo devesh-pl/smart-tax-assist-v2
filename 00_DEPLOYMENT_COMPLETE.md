@@ -42,7 +42,7 @@
 ```python
 # Now environment-aware:
 if ENVIRONMENT == "production":
-    ALLOWED_ORIGINS = ["https://smart-tax-assist-v2.vercel.app"]
+    ALLOWED_ORIGINS = ["https://smart-tax-assist.vercel.app"]
 else:
     ALLOWED_ORIGINS = ["http://localhost:3000"]
 ```
@@ -183,7 +183,7 @@ smart-tax-assist-v2/
    ├── Create project from GitHub
    ├── Set Root Directory: frontend
    ├── Add Env Vars: NEXT_PUBLIC_API_URL, NEXT_PUBLIC_ENVIRONMENT
-   └── Deploy! → https://smart-tax-assist-v2.vercel.app
+   └── Deploy! → https://smart-tax-assist.vercel.app
 
 5. VERIFY
    ├── Test backend health
@@ -457,7 +457,7 @@ git push origin main
 Your SmartTax Assist application is now configured for secure deployment to:
 
 ```
-Frontend:  Vercel  → https://smart-tax-assist-v2.vercel.app
+Frontend:  Vercel  → https://smart-tax-assist.vercel.app
 Backend:   Render  → https://smarttax-backend.onrender.com
 Database:  MongoDB Atlas
 Version Control: GitHub (Private)

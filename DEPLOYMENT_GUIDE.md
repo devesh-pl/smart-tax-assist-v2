@@ -364,7 +364,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://smart-tax-assist-v2.vercel.app",  # Add your Vercel URL
+        "https://smart-tax-assist.vercel.app",  # Your Vercel frontend URL
         "https://*.vercel.app"  # Or allow all Vercel deployments
     ],
     allow_credentials=True,
@@ -437,6 +437,6 @@ db.expenses.createIndex({ user_id: 1 })
 **Deployment Complete! 🎉**
 
 Your SmartTax Assist application is now live:
-- 🌐 Frontend: `https://smart-tax-assist-v2.vercel.app`
+- 🌐 Frontend: `https://smart-tax-assist.vercel.app`
 - 🔌 Backend: `https://smarttax-backend.onrender.com`
 - 🗄️ Database: `MongoDB Atlas`
