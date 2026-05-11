@@ -50,7 +50,7 @@ jobs:
 
       # ── FRONTEND SETUP ────────────────────────────────────────────────────
       - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
