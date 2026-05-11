@@ -1,5 +1,5 @@
 # ---------- BUILD STAGE ----------
-FROM node:18 AS builder
+FROM node:26 AS builder
 
 ARG NEXT_PUBLIC_API_URL=http://localhost:8000
 
@@ -18,7 +18,7 @@ RUN npm run build
 
 
 # ---------- PRODUCTION STAGE ----------
-FROM node:18-slim
+FROM node:26-slim
 
 WORKDIR /app
 
